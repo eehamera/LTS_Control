@@ -7,7 +7,7 @@ from lts_controller import LTSController
 
 # To-Do: find a way to move the two in parallel, right now that means finding a way to know if the devices are still moving or not
 
-# Note: this version of code is setup so that a second lts isn't required for testing purposes. Change line 145 from False to True to enable the use of the 2nd device.
+# Note: this version of code is setup so that a second lts isn't required for testing purposes. Change line 165 from False to True to enable the use of the 2nd device.
 
 # If needed in the future, it would be simple to add the ability to request a custom position in the user interface.
 
@@ -68,7 +68,7 @@ class MainWindow(QWidget):
         for b in self.buttons:
             b.setEnabled(False)
 
-        button.setChecked(False)  # reset while moving
+        button.setChecked(True)  # Turn button green when clicked
 
         # this is the position of the button that was pressed
         x_target, y_target = self.LOCATIONS[n]
@@ -87,8 +87,8 @@ class MainWindow(QWidget):
         for b in self.buttons:
             b.setEnabled(True)
 
-        # Turn the pressed button green
-        self.buttons[n - 1].setChecked(True)
+        # Turn the pressed button back to red when done moving
+        self.buttons[n - 1].setChecked(False)
 
     # this makes sure that the devices are properly disconnected when the gui window is closed
     def closeEvent(self, event):
@@ -149,14 +149,14 @@ app = QApplication(sys.argv)
 # This controls the appearance of the gui
 app.setStyleSheet("""
     QPushButton {
-        background-color: #8f1f1f;
+        background-color: #8f1f1f; 
         color: white; 
         border-radius: 10px;
         padding: 8px;
     }
     
     QPushButton:checked {
-        background-color: #4CAF50;
+        background-color: #4CAF50; 
         color: white;
     }
 """)

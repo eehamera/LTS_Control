@@ -39,9 +39,10 @@ class LTSController:
 
             # Get parameters related to homing/zeroing/other
             home_params = self.device.GetHomingParams()
-            print(f'Homing velocity: {home_params.Velocity}\n,'
-                f'Homing Direction: {home_params.Direction}')
-            home_params.Velocity = Decimal(30.0)  # real units, mm/s
+            #print(f'Homing velocity: {home_params.Velocity}\n,'
+            #    f'Homing Direction: {home_params.Direction}')
+            #ISSUE: I can't seem to be able to change the homing velocity
+            home_params.Velocity = Decimal(50.0)  # real units, mm/s
             # Set homing params (if changed)
             self.device.SetHomingParams(home_params)
 
@@ -52,12 +53,19 @@ class LTSController:
                 self.device.SetVelocityParams(vel_params)
             except Exception as e:
                 print(f"Warning: could not set velocity params for {self.serial_no}: {e}")
+
+            #home device 
+            # NOTE: Try to shorten time from current (10s), also try to speed up velocity when homing becasuse depending on initial location of the LTS, it might take even longer than 60s.
+            self.device.Home(10000)
+            print("Device connected")
+
         else:
             print(f"Device {self.serial_no} failed to initialize.")
                       
     # this isn't currently used in the application but can be used to send the device back to zero
-    def home(self):
-        self.device.Home(60000)
+    #IMPORTANT: This needs to be done at the beginning to make sure the position is accurate
+    #def home(self):
+    #    self.device.Home(60000)
 
     # this is used to move the devices to specified positions
     def move_to(self, position_mm):
