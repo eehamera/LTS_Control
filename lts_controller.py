@@ -42,7 +42,7 @@ class LTSController:
             #print(f'Homing velocity: {home_params.Velocity}\n,'
             #    f'Homing Direction: {home_params.Direction}')
             #ISSUE: I can't seem to be able to change the homing velocity
-            home_params.Velocity = Decimal(50.0)  # real units, mm/s
+            home_params.MinVelocity = Decimal(30.0)  # real units, mm/s
             # Set homing params (if changed)
             self.device.SetHomingParams(home_params)
 
