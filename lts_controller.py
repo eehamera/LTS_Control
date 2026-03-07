@@ -26,14 +26,14 @@ class LTSController:
         self.device.Connect(self.serial_no)
 
         if not self.device.IsSettingsInitialized():
-            self.device.WaitForSettingsInitialized(10000)
+            self.device.WaitForSettingsInitialized(20000)
             assert self.device.IsSettingsInitialized() is True
 
         if self.device.IsSettingsInitialized():
             self.device.StartPolling(250)
-            time.sleep(0.25)
+            time.sleep(0.5)
             self.device.EnableDevice()
-            time.sleep(0.25)
+            time.sleep(0.5)
 
             motor_config = self.device.LoadMotorConfiguration(self.serial_no)
 
