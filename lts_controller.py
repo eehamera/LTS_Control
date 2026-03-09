@@ -11,6 +11,8 @@ from Thorlabs.MotionControl.DeviceManagerCLI import *
 from Thorlabs.MotionControl.GenericMotorCLI import *
 from Thorlabs.MotionControl.IntegratedStepperMotorsCLI import *
 
+# IF THE DEVICES ARE NOT CONNECTING, MAKE THE DELAYS LONGER IN THIS CODE (this is because the usb cables are so long)
+
 
 class LTSController:
     #setting serial number of device

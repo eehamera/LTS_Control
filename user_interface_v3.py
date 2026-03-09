@@ -1,9 +1,6 @@
 import sys
 import time
-from PyQt6.QtWidgets import (
-    QApplication, QWidget, QPushButton, QVBoxLayout, QLabel,
-    QHBoxLayout, QGridLayout, QGroupBox, QLineEdit
-)
+from PyQt6.QtWidgets import (QApplication, QWidget, QPushButton, QVBoxLayout, QLabel,QHBoxLayout, QGridLayout, QGroupBox, QLineEdit)
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
