@@ -5,7 +5,7 @@ from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
 
-USE_MOCK = True
+USE_MOCK = False
 ENABLE_MANUAL_POSITION = True
 # --------------------------------
 # Mock controller (no hardware required)
