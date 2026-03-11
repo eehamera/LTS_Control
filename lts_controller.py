@@ -57,8 +57,9 @@ class LTSController:
                 print(f"Warning: could not set velocity params for {self.serial_no}: {e}")
 
             #home device 
-            # NOTE: Try to shorten time from current (10s), also try to speed up velocity when homing becasuse depending on initial location of the LTS, it might take even longer than 60s.
-            self.device.Home(10000)
+            # NOTE: Currently trying to eliminate the time in the parentheses since its taking too long UPDATE: doesn't work so Im just leaving this as a very large time delay.
+            
+            self.device.Home(100000)
             print("Device connected")
 
         else:

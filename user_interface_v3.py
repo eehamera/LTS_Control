@@ -5,10 +5,10 @@ from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
 
-USE_MOCK = False
+USE_MOCK = True
 ENABLE_MANUAL_POSITION = True
 # --------------------------------
-# Mock controller (no hardware required)
+# Mock controller (don't need connection to LTS devices to run)
 # --------------------------------
 class MockLTSController:
     def __init__(self, serial_number):
@@ -24,7 +24,7 @@ class MockLTSController:
     def move_to(self, position):
         print(f"[MOCK] Device {self.serial} moving to {position}")
         self._moving = True
-        time.sleep(1)  # simulate movement
+        time.sleep(1) 
         self._moving = False
         print(f"[MOCK] Device {self.serial} finished moving")
 
@@ -43,18 +43,21 @@ else:
 # GUI
 # --------------------------------
 class MainWindow(QWidget):
-
+    # ADJUST THE LOCATIONS THE BUTTONS CORRESPOND TO HERE
     LOCATIONS = {
-        1: (8.0, 70.0),
-        2: (10.0, 30.0),
-        3: (12.0, 12.0),
-        4: (14.0, 14.0),
-        5: (16.0, 16.0),
-        6: (20.0, 10.0),
-        7: (12.0, 12.0),
-        8: (14.0, 14.0),
-        9: (16.0, 16.0),
-       10: (0.0, 0.0),
+        # LARGE SAMPLE HOLDER
+        1: (130.0, 182.0),
+        2: (95.0, 182.0),
+        3: (58.0, 182.0),
+        4: (130.0, 147.0),
+        5: (95.0, 147.0),
+        6: (58.0, 147.0),
+        #SMALL SAMPLE HOLDER (renamed 1-4 in gui)
+        7: (138.0, 167.0),
+        8: (111.0, 167.0),
+        9: (138.0, 140.0),
+       10: (111.0, 140.0),
+       #RESET (if you press this button before closing the application its much quicker to start up again)
        11: (0.0, 0.0)
     }
 
@@ -74,35 +77,60 @@ class MainWindow(QWidget):
         self.resize(900, 400)
         self.buttons = []
 
-        self.active_button_index = None  # track which button is currently active
+        self.active_button_index = None 
+
+
+        # Creating a status label
+        #-------------------------------------------------------------
+        self.status_group = QGroupBox("Status")
+        self.status_group.setStyleSheet("""
+            QGroupBox {
+                border: 2px solid black;
+                border-radius: 10px;
+                margin-top: 12px;
+                font: bold 14pt 'Arial';
+            }
+
+            QGroupBox::title {
+                color: black;
+                subcontrol-origin: margin;
+                subcontrol-position: top left;
+                padding: 0 5px;
+                background-color: #FFFFFF;
+            }
+        """)
 
         self.status_label = QLabel("Current position: None")
-        self.status_label.setStyleSheet("color: white; font: 14pt 'Arial';")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
         self.status_label.setStyleSheet("""
             color: black;
             font: 14pt 'Arial';
-            background-color: #D3D3D3;   /* dark gray background */
-            border: 2px solid black;     /* white outline */
-            border-radius: 10px;         /* rounded corners */
-            padding: 8px;                /* spacing inside the box */
+            background-color: #D3D3D3;
+            border-radius: 6px;
+            padding: 8px;
         """)
 
+        status_layout = QVBoxLayout()
+        status_layout.addWidget(self.status_label)
+
+        self.status_group.setLayout(status_layout)
+        #-------------------------------------------------------------
+
+        # Creating a reset button
+        #-------------------------------------------------------------
         self.reset_button = QPushButton("RESET")
         self.reset_button.setMinimumHeight(70)
         self.reset_button.setStyleSheet("""
             QPushButton {
                 color: black;
                 font: 18pt 'Arial';
-                background-color: #FFBE30;
+                background-color: #89CFF0;
                 border: 2px solid black;
                 border-radius: 10px;
                 padding: 8px;
             }
 
-            QPushButton:hover {
-                background-color: #C0C0C0;
-            }
 
             QPushButton:pressed {
                 background-color: #AAAAAA;
@@ -110,12 +138,11 @@ class MainWindow(QWidget):
         """)
 
         self.reset_button.clicked.connect(lambda: self.on_click(11))
+        #-------------------------------------------------------------
         
         # Main layout
+        #-------------------------------------------------------------
         main_layout = QVBoxLayout()
-        #title = QLabel("Select a position:")
-        #title.setStyleSheet("font: 28pt 'Arial'; color: black; font-weight: bold;")
-        #main_layout.addWidget(title)
         main_layout.setContentsMargins(40, 40, 40, 40)
         main_layout.setSpacing(20)
 
@@ -123,11 +150,11 @@ class MainWindow(QWidget):
         columns_layout = QHBoxLayout()
         columns_layout.setSpacing(40)  # space between left and right group
 
-        # -----------------------
-        # LEFT GROUP: 2x3 grid
-        # -----------------------
+        #-------------------------------------------------------------
+        # Left group of buttons: 2x3 grid
+        #-------------------------------------------------------------
         left_group = QGroupBox("Large Sample Holder")
-        left_group.setFont(QFont("Arial", 24))  # 24pt font size
+        left_group.setFont(QFont("Arial", 18)) 
         left_group.setStyleSheet("""
             QGroupBox {
                 border: 3px solid black;
@@ -156,28 +183,24 @@ class MainWindow(QWidget):
         for i in range(6):
             coords = self.LOCATIONS[i + 1]
             button = QPushButton(f"{i+1}")
-            #button = QPushButton(f"{i+1}: ({coords[0]}, {coords[1]})")
             button.setCheckable(True)
             button.setMinimumHeight(120)
-            #button.setMaximumWidth(140)
             button.setStyleSheet("font: 20pt 'Arial';")
             button.clicked.connect(lambda checked, n=i+1: self.on_click(n))
 
-            row = i // 3  # 2 rows
-            col = i % 3   # 3 columns
+            row = i // 3  
+            col = i % 3   
             left_grid.addWidget(button, row, col)
             self.buttons.append(button)
-        #for r in range(2):
-        #   left_grid.setRowStretch(r, 1)
 
         for c in range(3):
             left_grid.setColumnStretch(c, 1)
 
-        # -----------------------
-        # RIGHT GROUP: 2x2 grid
-        # -----------------------
+        #-------------------------------------------------------------
+        # Right group of buttons: 2x2 grid
+        #-------------------------------------------------------------
         right_group = QGroupBox("Small Sample Holder")
-        right_group.setFont(QFont("Arial", 24))  # 24pt font size
+        right_group.setFont(QFont("Arial", 18))
         right_group.setStyleSheet("""
             QGroupBox {
                 border: 3px solid black;
@@ -198,9 +221,6 @@ class MainWindow(QWidget):
             }                     
         """)
         right_grid = QGridLayout()
-        #right_grid.setContentsMargins(10, 2, 10, 10)
-        #right_grid.setVerticalSpacing(2)
-        #right_grid.setHorizontalSpacing(20)
         right_group.setLayout(right_grid)
         right_grid.setSpacing(20)
         right_grid.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -211,7 +231,6 @@ class MainWindow(QWidget):
         for idx, pos in enumerate(positions):
             coords = self.LOCATIONS[pos]
             button = QPushButton(f"{button_names[idx]}")
-            #button = QPushButton(f"{button_names[idx]}: ({coords[0]}, {coords[1]})")
             button.setCheckable(True)
             button.setMinimumHeight(120)
             button.setMinimumWidth(120)
@@ -222,14 +241,10 @@ class MainWindow(QWidget):
             col = idx % 2
             right_grid.addWidget(button, row, col)
             self.buttons.append(button)
-        #for r in range(2):
-        #    right_grid.setRowStretch(r, 1)
 
-        #for c in range(2):
-        #    right_grid.setColumnStretch(c, 1)
 
-        main_layout.addWidget(self.status_label)
-        main_layout.addSpacing(10)  # optional spacing
+        main_layout.addWidget(self.status_group)
+        main_layout.addSpacing(10) 
 
         # Add groups to columns layout
         columns_layout.addWidget(left_group)
@@ -293,6 +308,7 @@ class MainWindow(QWidget):
     # -----------------------
     # Button logic
     # -----------------------
+    # Controls what happens when a button is pressed
     def on_click(self, n):
         print(f"Button {n} pressed")
 
@@ -327,7 +343,7 @@ class MainWindow(QWidget):
         self.worker.finished.connect(self.on_motion_finished)
         self.worker.error.connect(self.on_error)
         self.worker.start()
-
+    # controls what happens when the device is done moving
     def on_motion_finished(self, n):
         print(f"Motion finished for button {n}")
         for b in self.buttons:
@@ -357,7 +373,7 @@ class MainWindow(QWidget):
         if ENABLE_MANUAL_POSITION:
             self.manual_move_button.setEnabled(True)
         self.reset_button.setEnabled(True)
-
+    # adds ability to move to user defined positions
     def manual_move(self):
         try:
             x_target = float(self.x_input.text())
@@ -380,7 +396,7 @@ class MainWindow(QWidget):
 
         except ValueError:
             self.status_label.setText("Invalid manual position")
-
+    # disconnects the lts devices when the window is closed
     def closeEvent(self, event):
         self.lts_x.disconnect()
         if self.lts_y:
@@ -393,7 +409,7 @@ class MainWindow(QWidget):
             b.setEnabled(True)
 
 # -----------------------
-# Worker thread
+# Worker thread, this is what talks to the lts devices through lts_controller.py and moves them
 # -----------------------
 class Worker(QThread):
     finished = pyqtSignal(int)
@@ -440,9 +456,7 @@ app.setStyleSheet("""
         color: white;
     }
 
-    QPushButton:hover {
-        background-color: #a32929;
-    }
+    
 """)
 
 window = MainWindow(connect_y=True)
