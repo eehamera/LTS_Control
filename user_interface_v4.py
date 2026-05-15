@@ -8,7 +8,7 @@ from PyQt6.QtGui import QFont
 USE_MOCK = True
 ENABLE_MANUAL_POSITION = True
 xg1 = 0.0
-yg1 = 0.
+yg1 = 0.0
 xg2 = 0.0
 yg2 = 0.0
 # --------------------------------
@@ -147,24 +147,6 @@ class MainWindow(QWidget):
         self.reset_button = QPushButton("RESET")
         self.reset_button.setMinimumHeight(70)
         self.reset_button.setStyleSheet("""
-            
-            QTabWidget::pane {
-                border: 1px solid #D0D7E2;
-                border-radius: 8px;
-                top: -1px;
-                background: white;
-            }
-            
-            QTabBar::tab {
-                background: #E6EEF7;
-                color: #2B2B2B;
-                padding: 10px 18px;
-                margin-right: 4px;
-                border-top-left-radius: 6px;
-                border-top-right-radius: 6px;
-                min-width: 160px;
-                font-size: 13pt;
-            }
                                                                     
             QPushButton {
                 color: black;
@@ -427,7 +409,6 @@ class MainWindow(QWidget):
             
         
         self.setLayout(main_layout)
-        main_layout.addStretch()
 
     # -----------------------
     # Button logic
@@ -500,8 +481,8 @@ class MainWindow(QWidget):
             border-radius: 10px;
             padding: 8px;
         """)
-        if ENABLE_MANUAL_POSITION:
-            self.manual_move_button.setEnabled(True)
+        
+        self.manual_move_button.setEnabled(True)
         self.reset_button.setEnabled(True)
     # adds ability to move to user defined positions
     def manual_move(self):
@@ -548,6 +529,9 @@ class MainWindow(QWidget):
         print("Error:", msg)
         for b in self.buttons:
             b.setEnabled(True)
+
+        self.reset_button.setEnabled(True)
+        self.manual_move_button.setEnabled(True)
 
 # -----------------------
 # Worker thread, this is what talks to the lts devices through lts_controller.py and moves them
