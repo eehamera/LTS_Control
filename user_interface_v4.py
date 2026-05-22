@@ -234,7 +234,7 @@ class MainWindow(QWidget):
             button.setMinimumHeight(140)
             button.setMinimumWidth(140)
             button.setStyleSheet("font: 20pt 'Arial';")
-            button.clicked.connect(lambda checked, n=i+1: self.on_click(n))
+            button.clicked.connect(lambda checked, n=i+1: self.on_click(n)) #ERROR
 
             row = i // 3  
             col = i % 3   
@@ -252,6 +252,7 @@ class MainWindow(QWidget):
         #-------------------------------------------------------------
         # 6 Sample Holder
         #-------------------------------------------------------------
+        """
         g6 = QGroupBox("6 Sample Holder")
         g6.setFont(QFont("Arial", 18))
 
@@ -281,7 +282,8 @@ class MainWindow(QWidget):
         page_layout6 = QVBoxLayout()
         page_layout6.addWidget(g6)
         page6.setLayout(page_layout6)
-        #self.tabs.addTab(page6, "6 Sample Holder")
+        self.tabs.addTab(page6, "6 Sample Holder")
+        """
 
         #-------------------------------------------------------------
         # 24 sample holder
@@ -321,6 +323,7 @@ class MainWindow(QWidget):
         #-------------------------------------------------------------
         # 12 sample holder 
         #-------------------------------------------------------------
+        """
         g12 = QGroupBox("12 Sample Holder")
         g12.setFont(QFont("Arial", 18))
         grid12 = QGridLayout()
@@ -350,8 +353,8 @@ class MainWindow(QWidget):
         page_layout12.addWidget(g12)
         page12.setLayout(page_layout12)
 
-        #self.tabs.addTab(page12, "12 Sample Holder")
-
+        self.tabs.addTab(page12, "12 Sample Holder")
+        """
 
         main_layout.addWidget(self.tabs)
         main_layout.addWidget(self.status_group)
@@ -363,7 +366,7 @@ class MainWindow(QWidget):
         main_layout.addSpacing(20)
         main_layout.addWidget(self.reset_button)
 
-        if ENABLE_MANUAL_POSITION:
+        if ENABLE_MANUAL_POSITION: 
 
             manual_layout = QHBoxLayout()
 
@@ -419,7 +422,7 @@ class MainWindow(QWidget):
         print(f"Button {n} pressed")
 
         for b in self.buttons:
-            b.setEnabled(False)
+            b.setEnabled(False)   #ERROR
         self.reset_button.setEnabled(False)
 
         if n != 11:
@@ -482,8 +485,8 @@ class MainWindow(QWidget):
             border-radius: 10px;
             padding: 8px;
         """)
-        
-        self.manual_move_button.setEnabled(True)
+        if ENABLE_MANUAL_POSITION:
+            self.manual_move_button.setEnabled(True)
         self.reset_button.setEnabled(True)
     # adds ability to move to user defined positions
     def manual_move(self):
