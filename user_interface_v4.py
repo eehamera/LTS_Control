@@ -7,8 +7,12 @@ from PyQt6.QtGui import QFont
 
 USE_MOCK = True
 ENABLE_MANUAL_POSITION = True
+
+# these are a quick option to shift all the positions by the same amount
+#24 sample holder
 xg1 = 0.0
 yg1 = 0.0
+#12 sample holder
 xg2 = 0.0
 yg2 = 0.0
 # --------------------------------
@@ -64,12 +68,12 @@ class MainWindow(QWidget):
        #RESET (if you press this button before closing the application its much quicker to start up again)
        11: (0.0, 0.0),
        # 24 SAMPLE HOLDER
-       12: (129.0 + xg1, 187.0 + yg1),
-       13: (91.0 + xg1, 187.0 + yg1),
-       14: (53.0 + xg1, 187.0 + yg1),
-       15: (129.0 + xg1, 149.0 + yg1),
-       16: (91.0 + xg1, 149.0 + yg1),
-       17: (53.0 + xg1, 149.0 + yg1),
+       12: (123.0 + xg1, 192.0 + yg1),
+       13: (84.0 + xg1, 192.0 + yg1),
+       14: (45.0 + xg1, 192.0 + yg1),
+       15: (123.0 + xg1, 153.0 + yg1),
+       16: (84.0 + xg1, 153.0 + yg1),
+       17: (45.0 + xg1, 153.0 + yg1),
        # 12 SAMPLE HOLDER
        18: (138.0 + xg2, 167.0 + yg2), 
        19: (111.0 + xg2, 167.0 + yg2),
