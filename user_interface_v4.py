@@ -8,6 +8,12 @@ from PyQt6.QtGui import QFont
 USE_MOCK = True
 ENABLE_MANUAL_POSITION = True
 
+# Use these to select which sample holders you are using in a day, for 5/27/26 the 96 and 24 holders are being used
+SHOW_96 = True
+SHOW_6 = False
+SHOW_24 = True
+SHOW_12 = False
+
 # these are a quick option to shift all the positions by the same amount
 #24 sample holder
 xg1 = 0.0
@@ -220,141 +226,141 @@ class MainWindow(QWidget):
         #-------------------------------------------------------------
         # 96 Sample Holder
         #-------------------------------------------------------------
-        g96 = QGroupBox("96 Sample Holder")
-        g96.setFont(QFont("Arial", 18)) 
-        
-        grid96 = QGridLayout()
-        g96.setLayout(grid96)
-        grid96.setSpacing(20)
-        grid96.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        if SHOW_96:
+            g96 = QGroupBox("96 Sample Holder")
+            g96.setFont(QFont("Arial", 18)) 
+            
+            grid96 = QGridLayout()
+            g96.setLayout(grid96)
+            grid96.setSpacing(20)
+            grid96.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        for i in range(6):
-            button = QPushButton(f"{i+1}")
-            button.setCheckable(True)
-            button.setMinimumHeight(140)
-            button.setMinimumWidth(140)
-            button.setStyleSheet("font: 20pt 'Arial';")
-            button.clicked.connect(lambda checked, n=i+1: self.on_click(n)) #ERROR
+            for i in range(6):
+                button = QPushButton(f"{i+1}")
+                button.setCheckable(True)
+                button.setMinimumHeight(140)
+                button.setMinimumWidth(140)
+                button.setStyleSheet("font: 20pt 'Arial';")
+                button.clicked.connect(lambda checked, n=i+1: self.on_click(n)) #ERROR
 
-            row = i // 3  
-            col = i % 3   
-            grid96.addWidget(button, row, col)
-            self.buttons.append(button)
-            self.button_map[i + 1] = button
+                row = i // 3  
+                col = i % 3   
+                grid96.addWidget(button, row, col)
+                self.buttons.append(button)
+                self.button_map[i + 1] = button
 
-        page96 = QWidget()
-        page_layout96 = QVBoxLayout()
-        page_layout96.addWidget(g96)
-        page96.setLayout(page_layout96)
+            page96 = QWidget()
+            page_layout96 = QVBoxLayout()
+            page_layout96.addWidget(g96)
+            page96.setLayout(page_layout96)
 
-        self.tabs.addTab(page96, "96 Sample Holder")
+            self.tabs.addTab(page96, "96 Sample Holder")
 
-        #-------------------------------------------------------------
-        # 6 Sample Holder
-        #-------------------------------------------------------------
-        """
-        g6 = QGroupBox("6 Sample Holder")
-        g6.setFont(QFont("Arial", 18))
+            #-------------------------------------------------------------
+            # 6 Sample Holder
+            #-------------------------------------------------------------
+            if SHOW_6:
+                g6 = QGroupBox("6 Sample Holder")
+                g6.setFont(QFont("Arial", 18))
 
-        grid6 = QGridLayout()
-        g6.setLayout(grid6)
-        grid6.setSpacing(20)
-        grid6.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                grid6 = QGridLayout()
+                g6.setLayout(grid6)
+                grid6.setSpacing(20)
+                grid6.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        positions = [7, 8, 9, 10]
-        button_names = [1, 2, 3, 4]
+                positions = [7, 8, 9, 10]
+                button_names = [1, 2, 3, 4]
 
-        for idx, pos in enumerate(positions):
-            button = QPushButton(f"{button_names[idx]}")
-            button.setCheckable(True)
-            button.setMinimumHeight(140)
-            button.setMinimumWidth(140)
-            button.setStyleSheet("font: 20pt 'Arial';")
-            button.clicked.connect(lambda checked, n=pos: self.on_click(n))
+                for idx, pos in enumerate(positions):
+                    button = QPushButton(f"{button_names[idx]}")
+                    button.setCheckable(True)
+                    button.setMinimumHeight(140)
+                    button.setMinimumWidth(140)
+                    button.setStyleSheet("font: 20pt 'Arial';")
+                    button.clicked.connect(lambda checked, n=pos: self.on_click(n))
 
-            row = idx // 2
-            col = idx % 2
-            grid6.addWidget(button, row, col)
-            self.buttons.append(button)
-            self.button_map[pos] = button
-        
-        page6 = QWidget()
-        page_layout6 = QVBoxLayout()
-        page_layout6.addWidget(g6)
-        page6.setLayout(page_layout6)
-        self.tabs.addTab(page6, "6 Sample Holder")
-        """
+                    row = idx // 2
+                    col = idx % 2
+                    grid6.addWidget(button, row, col)
+                    self.buttons.append(button)
+                    self.button_map[pos] = button
+                
+                page6 = QWidget()
+                page_layout6 = QVBoxLayout()
+                page_layout6.addWidget(g6)
+                page6.setLayout(page_layout6)
+                self.tabs.addTab(page6, "6 Sample Holder")
 
         #-------------------------------------------------------------
         # 24 sample holder
         #-------------------------------------------------------------
-        g24 = QGroupBox("24 Sample Holder")
-        g24.setFont(QFont("Arial", 18))
+        if SHOW_24:
+            g24 = QGroupBox("24 Sample Holder")
+            g24.setFont(QFont("Arial", 18))
 
-        grid24 = QGridLayout()
-        g24.setLayout(grid24)
-        grid24.setSpacing(20)
-        grid24.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            grid24 = QGridLayout()
+            g24.setLayout(grid24)
+            grid24.setSpacing(20)
+            grid24.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        positions = [12, 13, 14, 15, 16, 17]
-        button_names = [1, 2, 3, 4, 5, 6]
+            positions = [12, 13, 14, 15, 16, 17]
+            button_names = [1, 2, 3, 4, 5, 6]
 
-        for idx, pos in enumerate(positions):
-            button = QPushButton(f"{button_names[idx]}")
-            button.setCheckable(True)
-            button.setMinimumHeight(140)
-            button.setMinimumWidth(140)
-            button.setStyleSheet("font: 20pt 'Arial';")
-            button.clicked.connect(lambda checked, n=pos: self.on_click(n))
+            for idx, pos in enumerate(positions):
+                button = QPushButton(f"{button_names[idx]}")
+                button.setCheckable(True)
+                button.setMinimumHeight(140)
+                button.setMinimumWidth(140)
+                button.setStyleSheet("font: 20pt 'Arial';")
+                button.clicked.connect(lambda checked, n=pos: self.on_click(n))
 
-            row = idx // 3
-            col = idx % 3
-            grid24.addWidget(button, row, col)
-            self.buttons.append(button)
-            self.button_map[pos] = button
+                row = idx // 3
+                col = idx % 3
+                grid24.addWidget(button, row, col)
+                self.buttons.append(button)
+                self.button_map[pos] = button
 
-        page24 = QWidget()
-        page_layout24 = QVBoxLayout()
-        page_layout24.addWidget(g24)
-        page24.setLayout(page_layout24)
+            page24 = QWidget()
+            page_layout24 = QVBoxLayout()
+            page_layout24.addWidget(g24)
+            page24.setLayout(page_layout24)
 
-        self.tabs.addTab(page24, "24 Sample Holder")
+            self.tabs.addTab(page24, "24 Sample Holder")
 
         #-------------------------------------------------------------
         # 12 sample holder 
         #-------------------------------------------------------------
-        """
-        g12 = QGroupBox("12 Sample Holder")
-        g12.setFont(QFont("Arial", 18))
-        grid12 = QGridLayout()
-        g12.setLayout(grid12)
-        grid12.setSpacing(20)
-        grid12.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        if SHOW_12:
+            g12 = QGroupBox("12 Sample Holder")
+            g12.setFont(QFont("Arial", 18))
+            grid12 = QGridLayout()
+            g12.setLayout(grid12)
+            grid12.setSpacing(20)
+            grid12.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        positions = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
-        button_names = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            positions = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+            button_names = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
-        for idx, pos in enumerate(positions):
-            button = QPushButton(f"{button_names[idx]}")
-            button.setCheckable(True)
-            button.setMinimumHeight(120)
-            button.setMinimumWidth(120)
-            button.setStyleSheet("font: 20pt 'Arial';")
-            button.clicked.connect(lambda checked, n=pos: self.on_click(n))
+            for idx, pos in enumerate(positions):
+                button = QPushButton(f"{button_names[idx]}")
+                button.setCheckable(True)
+                button.setMinimumHeight(120)
+                button.setMinimumWidth(120)
+                button.setStyleSheet("font: 20pt 'Arial';")
+                button.clicked.connect(lambda checked, n=pos: self.on_click(n))
 
-            row = idx // 6
-            col = idx % 6
-            grid12.addWidget(button, row, col)
-            self.buttons.append(button)
-            self.button_map[pos] = button
+                row = idx // 6
+                col = idx % 6
+                grid12.addWidget(button, row, col)
+                self.buttons.append(button)
+                self.button_map[pos] = button
 
-        page12 = QWidget()
-        page_layout12 = QVBoxLayout()
-        page_layout12.addWidget(g12)
-        page12.setLayout(page_layout12)
+            page12 = QWidget()
+            page_layout12 = QVBoxLayout()
+            page_layout12.addWidget(g12)
+            page12.setLayout(page_layout12)
 
-        self.tabs.addTab(page12, "12 Sample Holder")
-        """
+            self.tabs.addTab(page12, "12 Sample Holder")
 
         main_layout.addWidget(self.tabs)
         main_layout.addWidget(self.status_group)
