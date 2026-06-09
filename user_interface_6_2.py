@@ -239,12 +239,12 @@ class MainWindow(QWidget):
             grid96.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
             for i in range(6):
-                button = QPushButton(f"{i+1}")
+                button = QPushButton(f"{i+1}") #these numbers are based on the dictionary numbers
                 button.setCheckable(True)
                 button.setMinimumHeight(140)
                 button.setMinimumWidth(140)
                 button.setStyleSheet("font: 20pt 'Arial';")
-                button.clicked.connect(lambda checked, n=i+1: self.on_click(n)) #ERROR
+                button.clicked.connect(lambda checked, n=i+1: self.on_click(n)) 
 
                 row = i // 3  
                 col = i % 3   
@@ -431,7 +431,7 @@ class MainWindow(QWidget):
         print(f"Button {n} pressed")
 
         for b in self.buttons:
-            b.setEnabled(False)   #ERROR
+            b.setEnabled(False)   
         self.reset_button.setEnabled(False)
 
         if n != 11:
